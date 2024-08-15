@@ -1,0 +1,9 @@
+---
+- name: Shutdown homelab
+  hosts: homelab
+  remote_user: admin
+  become: true
+
+  tasks:
+    - name: Shutdown homelab
+      community.general.shutdown:

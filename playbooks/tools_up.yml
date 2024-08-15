@@ -1,0 +1,20 @@
+---
+
+- name: Install some basic tools
+  hosts: all
+  remote_user: admin
+  become: true
+
+  tasks:
+    - name: Ping hosts
+      ansible.builtin.ping:
+
+    - name: Install htop
+      ansible.builtin.apt:
+        name: htop
+        state: latest
+
+    - name: Install neofetch
+      ansible.builtin.apt:
+        name: neofetch
+        state: latest

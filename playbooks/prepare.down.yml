@@ -1,0 +1,15 @@
+---
+
+- name: Clean admin users and groups
+  hosts: homelab
+  remote_user: admin
+  become: true
+
+  vars:
+    admin_group: wheel
+
+  tasks:
+    - name: Remove admin group
+      ansible.builtin.group:
+        name: "{{ admin_group }}"
+        state: present

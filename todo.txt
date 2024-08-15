@@ -1,0 +1,3 @@
+Setup Hosts
+Write playbooks
+automate as much as possible

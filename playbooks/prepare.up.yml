@@ -1,0 +1,52 @@
+---
+
+- name: Prepare admin users and group
+  hosts: all
+  become: true
+
+  vars:
+    admin_users:
+      - admin
+    admin_group: wheel
+
+  tasks:
+    - name: Ping my hosts
+      ansible.builtin.ping:
+
+    - name: Create ansible admin_group
+      ansible.builtin.group:
+        name: "{{ admin_group }}"
+        state: present
+
+    - name: Provide passwordless sudo rights to admin_group
+      community.general.sudoers:
+        name: allow-admin_users
+        group: wheel
+        present: true
+        nopasswd: true
+        commands: ALL
+      # ansible.builtin.lineinfile:
+      #   path: /etc/sudoers
+      #   state: present
+      #   regexp: '^%{{ admin_group }}'
+      #   line: '%{{ admin_group }} ALL=(ALL) NOPASSWD: ALL'
+      #   validate: visudo -cf %s
+
+    - name: Create ansible admin_users
+      ansible.builtin.user:
+        name: "{{ item }}"
+        shell: /bin/bash
+        update_password: always
+        password: '!'
+        groups: "{{ admin_group }}"
+        append: true
+      with_items:
+        - "{{ admin_users }}"
+
+    - name: Add authorized key
+      ansible.posix.authorized_key:
+        user: "{{ item }}" 
+        state: present
+        key: "{{ lookup('file', '~/.ssh/ansible.pub') }}" 
+      with_items:
+        - "{{ admin_users }}"

@@ -1,0 +1,11 @@
+---
+homelab:
+  hosts:
+    disasterarea:
+      ansible_host: disasterarea
+    arthur:
+      ansible_host: arthur
+    ford:
+      ansible_host: ford
+    trillian:
+      ansible_host: trillian
