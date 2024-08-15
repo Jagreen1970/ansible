@@ -1,5 +1,0 @@
-ford ansible_host=ford
-trillian ansible_host=trillian
-arthur ansible_host=arthur
-disasterarea ansible_host=disasterarea
-

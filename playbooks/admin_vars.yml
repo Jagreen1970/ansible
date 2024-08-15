@@ -1,0 +1,4 @@
+---
+admin_group: wheel
+admin_users:
+  - admin

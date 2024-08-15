@@ -2,14 +2,27 @@
 
 - name: Clean admin users and groups
   hosts: homelab
-  remote_user: admin
   become: true
 
-  vars:
-    admin_group: wheel
-
   tasks:
+    - name: Read users from file
+      ansible.builtin.include_vars:
+        file: admin_vars.yml
+        name: admin_vars
+
+    - name: Remove group from sudoers
+      community.general.sudoers:
+        name: allow-admin_users
+        state: absent
+
     - name: Remove admin group
       ansible.builtin.group:
-        name: "{{ admin_group }}"
-        state: present
+        name: "{{ admin_vars.admin_group }}"
+        state: absent
+
+    - name: Remove admin users
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ admin_vars.admin_users }}"
