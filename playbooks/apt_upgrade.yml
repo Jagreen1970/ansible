@@ -1,0 +1,11 @@
+---
+- name: Upgrade all packages
+  remote_user: admin
+  hosts: homelab
+  become: true
+
+  tasks:
+    - name: Update cache
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: true

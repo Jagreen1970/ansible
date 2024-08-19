@@ -1,0 +1,25 @@
+---
+- name: Upgrade Ubuntu and reboot if necessary
+  remote_user: admin
+  become: true
+  hosts: all
+
+  tasks:
+    - name: Upgrade System
+      ansible.builtin.apt:
+        upgrade: dist
+        update_cache: true
+
+    - name: Check if reboot is necessary
+      ansible.builtin.stat:
+        path: /var/run/reboot_required
+        get_checksum: false
+      register: reboot_required
+
+    - name: Do Reboot if necessary
+      ansible.builtin.reboot:
+      when: reboot_required.stat.exists
+
+    - name: Cleanup dependencies
+      ansible.builtin.apt:
+        autoremove: true

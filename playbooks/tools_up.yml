@@ -1,7 +1,7 @@
 ---
 
 - name: Install some basic tools
-  hosts: all
+  hosts: homelab
   remote_user: admin
   become: true
 
